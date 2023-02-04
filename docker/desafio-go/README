@@ -1,1 +1,1 @@
-docker run dimitriaugusto/fullcycle
+docker run --pull=always dimitriaugusto/fullcycle
