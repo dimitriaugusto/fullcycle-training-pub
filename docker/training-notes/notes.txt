@@ -1,0 +1,92 @@
+INICIANDO COM DOCKER
+--------------------
+
+installed docker desktop from https://docs.docker.com/desktop/install/ubuntu/
+
+created docker/scripts/start-docker-desktop.sh
+docker ps
+docker run hello-world
+docker ps -a
+docker run -it ubuntu bash
+#other terminal> docker ps
+docker start suspicious_franklin
+docker run -it --rm ubuntu bash
+
+
+PUBLICANDO COM NGINX
+
+docker run nginx
+
+# docker cli != docker engine.
+# um processo acessaria o nginx:80. mas nao o docker cli 
+
+docker run -p 8080:80 nginx
+curl http://localhost:8080
+
+docker run -d -p 8080:80 nginx
+
+REMOVENDO CONTAINERS
+
+docker stop <container id / name>
+docker start <container id / name>
+docker rm <container id / name>
+
+# stop and remove
+docker rm <container id / name> -f
+
+ACESSANDO E ALTERANDO ARQUIVOS
+
+docker run -d -p 8080:80 --name nginx-dimitri nginx
+docker exec nginx-dimitri ls
+docker exec -it nginx-dimitri bash
+cd /usr/share/nginx/html/
+apt update
+apt install vim
+
+BIND MOUNTS 
+(-v : antigo. cria a pasta local se nao existente)
+
+vim /home/vntdilo/repo/dimilo/fullcycle-training/fullcycle-training-repo/html/index.html
+# <h1>Dimitri's Full Cycle</h1>
+docker run -d -p 8080:80 --name nginx-dimitri -v /home/vntdilo/repo/dimilo/fullcycle-training/fullcycle-training-repo/html:/usr/share/nginx/html nginx
+curl http://localhost:8080
+
+--mount (dá erro quando a pasta local nao existe)
+docker run -d -p 8080:80 --name nginx-dimitri --mount type=bind,source="$(pwd)"/html,target=/usr/share/nginx/html nginx
+
+VOLUMES
+
+docker volume create dimitri-volume
+docker run -d -p 8080:80 --name nginx-dimitri --mount type=volume,source=dimitri-volume,target=/app nginx
+docker run -d -p 8081:80 --name nginx-dimitri --mount type=volume,source=dimitri-volume,target=/app nginx
+docker run -d -p 8082:80 --name nginx-dimitri -v dimitri-volume:/app nginx
+docker volume prune
+
+
+TRABALHANDO COM IMAGENS
+-----------------------
+
+hub.docker.com
+
+recap: container registry: repo de imagens
+
+docker pull <image> // trazer imagem para maquina local
+
+docker build -t dimitriaugusto/nginx-with-vim:latest .
+docker run -it dimitriaugusto/nginx-with-vim bash
+
+
+
+
+CMD vs ENTRYPOINT
+docker build -t dimitriaugusto/ubuntu ./ubuntu/
+docker run --rm dimitriaugusto/ubuntu
+docker run --rm dimitriaugusto/ubuntu echo world
+
+// o cmd acaba sendo parametro do entrypoint devido a como o dockerfile e adjacencias estao
+
+DOCKER ENTRYPOINT
+// olhar o docker file de uma imagem no docker hub
+
+sudo docker login
+docker push 
