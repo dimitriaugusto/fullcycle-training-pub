@@ -1,0 +1,6 @@
+[submodule "comm/fullcycle-fc-grpc"]
+	path = comm/fullcycle-fc-grpc
+	url = git@github.com:dimitriaugusto/fullcycle-fc-grpc.git
+[submodule "comm/fullcycle-13-GraphQL"]
+	path = comm/fullcycle-13-GraphQL
+	url = https://github.com/dimitriaugusto/fullcycle-13-GraphQL
